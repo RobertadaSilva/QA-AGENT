@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dashboard de QA</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+<style>
+:root{--bg:#f4f4f8;--surface:#ffffff;--border:#e2e2ea;--text:#1a1a2e;--muted:#6b6b80;--dim:#9999aa;--accent:#7c3aed;--green:#059669;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;--cyan:#0891b2;--radius:10px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.loading{display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:16px}
+.loading .spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error{text-align:center;padding:80px 20px;color:var(--red)}.error h2{margin-bottom:12px}
+.app{display:none;max-width:1500px;margin:0 auto;padding:24px 32px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+header h1{font-size:1.4rem;font-weight:700;color:var(--accent)}
+header .actions{display:flex;gap:10px;align-items:center}
+header .meta{font-size:.72rem;color:var(--dim)}
+.btn{padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:.75rem;cursor:pointer;transition:all .15s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn-accent{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-accent:hover{background:#6d28d9}
+.filters{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.filters select,.filters input{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:7px 12px;border-radius:8px;font-size:.8rem;font-family:inherit}
+.filters select:focus,.filters input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(124,58,237,.12)}
+.filters label{font-size:.68rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-right:4px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:24px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;transition:border-color .2s,transform .2s;position:relative;cursor:default;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.kpi:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 12px rgba(124,58,237,.08)}
+.kpi .val{font-size:1.6rem;font-weight:700;color:var(--accent);line-height:1.2}
+.kpi .lbl{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:4px}
+.kpi.green .val{color:var(--green)}.kpi.red .val{color:var(--red)}.kpi.blue .val{color:var(--blue)}.kpi.yellow .val{color:var(--yellow)}.kpi.cyan .val{color:var(--cyan)}
+.kpi .tip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:.7rem;color:var(--muted);width:240px;line-height:1.5;z-index:20;text-align:left;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.kpi:hover .tip{display:block}
+.section{margin-bottom:28px}
+.section-title{font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:12px;padding-left:10px;border-left:3px solid var(--accent);display:flex;align-items:center;gap:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid-1{grid-template-columns:1fr}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.card:hover{border-color:rgba(124,58,237,.2)}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
+.card-title{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+.card-desc{font-size:.67rem;color:var(--dim);margin:3px 0 10px;line-height:1.4}
+.info-icon{width:18px;height:18px;border-radius:50%;background:var(--bg);border:1px solid var(--border);color:var(--dim);font-size:.6rem;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .2s}
+.info-icon:hover{border-color:var(--accent);color:var(--accent)}
+.card-info{display:none;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:.7rem;color:var(--muted);line-height:1.5}
+.card-info.open{display:block}
+footer{text-align:center;padding:20px 0;border-top:1px solid var(--border);margin-top:32px;color:var(--dim);font-size:.68rem}
+footer strong{color:var(--accent)}
+.bugs-table{width:100%;border-collapse:collapse;font-size:.76rem}
+.bugs-table th{text-align:left;color:var(--accent);padding:8px;border-bottom:1px solid var(--border);font-size:.66rem;text-transform:uppercase;letter-spacing:.4px}
+.bugs-table td{padding:7px 8px;border-bottom:1px solid var(--bg)}
+.bugs-table tr:hover td{background:rgba(124,58,237,.03)}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+@media print{.filters,.actions,.info-icon,.tip{display:none}}
+.app.filtering .kpis,.app.filtering .section{opacity:.4;pointer-events:none;transition:opacity .15s}
+</style>
+</head>
+<body>
+<div class="loading" id="loading"><div class="spinner"></div><span style="color:var(--muted);font-size:.85rem">Carregando dados do Asana...</span></div>
+<div class="error" id="error" style="display:none"><h2>⚠️ Erro ao carregar</h2><p id="errorMsg"></p></div>
+<div class="app" id="app">
+<header>
+  <div><h1>📊 Dashboard QA</h1><p class="meta">Features de Lançamento - Desde Jan/2026 | <span id="updateTime"></span></p></div>
+  <div class="actions"><button class="btn" onclick="exportCSV()">📄 CSV</button><button class="btn btn-accent" onclick="window.print()">📥 Exportar</button></div>
+</header>
+<div class="filters">
+  <div><label>Projeto</label><select id="fProject"><option value="">Todos</option></select></div>
+  <div><label>Status</label><select id="fSection"><option value="">Todos</option><option value="Finalizado">Finalizado</option><option value="Em andamento">Em andamento</option></select></div>
+  <div><label>De</label><input type="text" id="fFrom" readonly></div>
+  <div><label>Até</label><input type="text" id="fTo" readonly></div>
+  <button class="btn" onclick="applyFilters()">Filtrar</button>
+  <button class="btn" onclick="resetFilters()">Limpar</button>
+  <span id="filterInfo" style="font-size:.72rem;color:var(--dim);margin-left:8px"></span>
+</div>
+<div class="kpis" id="kpis"></div>
+
+<div class="section">
+  <div class="section-title">📦 Volume por Projeto</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">Cards Testados por Projeto</div></div><span class="info-icon" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">?</span></div>
+      <div class="card-info">Quantidade de cards de QA em cada projeto (identificado pela tag no Asana). Cada card é atribuído ao seu projeto principal.</div>
+      <div class="card-desc">Distribuição de cards testados pelo QA por projeto.</div>
+      <div id="chartProjects"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">Relatos de Bugs por Projeto</div></div><span class="info-icon" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">?</span></div>
+      <div class="card-info">Soma do campo "Número de relatos dos usuários" agrupado por projeto. Cada card é atribuído ao seu projeto principal.</div>
+      <div class="card-desc">Total de bugs reportados pelo QA em cada projeto.</div>
+      <div id="chartBugs"></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">🎯 Qualidade</div>
+  <div class="grid grid-1">
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">Densidade de Bugs por Projeto</div></div><span class="info-icon" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">?</span></div>
+      <div class="card-info"><b>Fórmula:</b> total de relatos ÷ total de cards do projeto.<br><br>Indica quantos bugs em média o QA encontra por card. Valores acima de 5 indicam projetos que precisam de mais atenção.</div>
+      <div class="card-desc">Média de bugs reportados por card em cada projeto.</div>
+      <div id="chartDensity"></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">📈 Evolução Mensal</div>
+  <div class="grid grid-1">
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">Cards Criados, Finalizados e Relatos por Mês</div></div><span class="info-icon" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">?</span></div>
+      <div class="card-info"><b>Criados:</b> novos cards abertos no mês<br><b>Finalizados:</b> cards movidos para "Finalizado"<br><b>Relatos:</b> total de bugs reportados pelo QA no mês<br><br>Ideal: finalizados acompanhando criados e relatos em tendência de queda.</div>
+      <div class="card-desc">Visão mensal do fluxo de QA.</div>
+      <div id="chartMonthly"></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">🚨 Cards com mais relatos</div>
+  <div class="grid grid-1"><div class="card">
+    <div class="card-header"><div><div class="card-title">Top 20 - Cards com mais relatos</div></div><span class="info-icon" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">?</span></div>
+    <div class="card-info">Cards ordenados pela quantidade de bugs reportados pelo QA. Permite identificar features mais problemáticas.</div>
+    <div class="card-desc">Cards com maior quantidade de bugs encontrados pelo QA.</div>
+    <div id="bugsTable"></div>
+  </div></div>
+</div>
+
+<footer>Dashboard gerado por <strong>QA Agent</strong> | Dados: Asana API | Projeto: Features de Lançamento</footer>
+</div>
+<script>
+let allTasks = [];
+let charts = {};
+let VALID_PROJECTS = [];
+
+const COLORS = {'API':'#3b82f6','APP CAMPO':'#10b981','APP SOCIAL':'#ec4899','GOV':'#8b5cf6','IFRAME':'#f59e0b','PORTAL':'#f97316','Whatsapp':'#0891b2'};
+const getColor = (name) => COLORS[name] || '#6366f1';
+const chartTheme = {chart:{background:'transparent',foreColor:'#6b6b80'},grid:{borderColor:'#e2e2ea'},tooltip:{theme:'light'}};
+
+const KPI_TIPS = {
+  'Total Cards': 'Total de cards de QA no período selecionado.',
+  'Finalizados': 'Cards que estão na seção "Finalizado" no Asana.',
+  'Em Andamento': 'Cards que ainda não foram finalizados.',
+  'Taxa de Bugs': 'Percentual de cards onde o QA encontrou bugs (tag "Prevenção"). Fórmula: cards com bug ÷ total × 100.',
+  'Total de Relatos': 'Soma de todos os bugs reportados pelo QA (campo "Número de relatos dos usuários").',
+  'Cards sem Bugs': 'Cards com a tag "N/BUGS" — testados pelo QA sem nenhum bug encontrado.',
+  'Média de bugs por cards': 'Média de relatos por card que teve bug. Fórmula: total relatos ÷ cards com bug.'
+};
+
+// --- Inicialização ---
+
+async function init() {
+  try {
+    const res = await fetch('/api/data');
+    if (!res.ok) throw new Error(await res.text());
+    const { tasks, projects } = await res.json();
+    VALID_PROJECTS = projects;
+    allTasks = tasks.filter(t => t.projects.length > 0);
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('updateTime').textContent = new Date().toLocaleString('pt-BR');
+    populateFilters();
+    applyFilters();
+  } catch (e) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error').style.display = 'block';
+    document.getElementById('errorMsg').textContent = e.message;
+  }
+}
+
+// --- Filtros ---
+
+function populateFilters() {
+  const projects = VALID_PROJECTS.filter(p => allTasks.some(t => t.projects.includes(p)));
+  const sel = document.getElementById('fProject');
+  projects.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; sel.appendChild(o); });
+  const fpOpts = { locale: 'pt', dateFormat: 'd/m/Y', minDate: new Date(2026, 0, 1) };
+  window.fpFrom = flatpickr('#fFrom', { ...fpOpts, defaultDate: new Date(2026, 0, 1) });
+  window.fpTo = flatpickr('#fTo', { ...fpOpts, defaultDate: new Date() });
+}
+
+function fpToISO(fp) {
+  const d = fp.selectedDates[0];
+  if (!d) return '';
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function getFiltered() {
+  const proj = document.getElementById('fProject').value;
+  const sec = document.getElementById('fSection').value;
+  const from = fpToISO(window.fpFrom);
+  const to = fpToISO(window.fpTo);
+  return allTasks.filter(t => {
+    if (proj && !t.projects.includes(proj)) return false;
+    if (sec === 'Finalizado' && !t.isFinished) return false;
+    if (sec === 'Em andamento' && t.isFinished) return false;
+    if (from && t.created < from) return false;
+    if (to && t.created > to) return false;
+    return true;
+  });
+}
+
+function applyFilters() {
+  document.getElementById('app').classList.add('filtering');
+  setTimeout(() => {
+    const proj = document.getElementById('fProject').value;
+    const f = getFiltered();
+    const s = computeStats(f, proj);
+    document.getElementById('filterInfo').textContent = f.length + ' de ' + allTasks.length + ' cards';
+    render(f, s);
+    document.getElementById('app').classList.remove('filtering');
+  }, 50);
+}
+
+function resetFilters() {
+  document.getElementById('fProject').value = '';
+  document.getElementById('fSection').value = '';
+  window.fpFrom.setDate(new Date(2026, 0, 1));
+  window.fpTo.setDate(new Date());
+  document.getElementById('filterInfo').textContent = '';
+  applyFilters();
+}
+
+// --- Cálculos ---
+
+function computeStats(tasks, filterProj) {
+  const byProject = {}, bugsByProject = {}, monthly = {};
+  let totalBugs = 0, completed = 0, cardsWithBug = 0, cardsNoBug = 0;
+
+  for (const t of tasks) {
+    if (t.isFinished) completed++;
+    if (t.hasBug) cardsWithBug++;
+    if (t.noBug) cardsNoBug++;
+    totalBugs += t.bugs;
+
+    if (filterProj) {
+      byProject[filterProj] = (byProject[filterProj] || 0) + 1;
+      bugsByProject[filterProj] = (bugsByProject[filterProj] || 0) + t.bugs;
+    } else {
+      const p = t.projects[0];
+      byProject[p] = (byProject[p] || 0) + 1;
+      bugsByProject[p] = (bugsByProject[p] || 0) + t.bugs;
+    }
+
+    if (!monthly[t.month]) monthly[t.month] = { total: 0, bugs: 0, completed: 0 };
+    monthly[t.month].total++;
+    monthly[t.month].bugs += t.bugs;
+    if (t.isFinished) monthly[t.month].completed++;
+  }
+
+  const bugRate = tasks.length > 0 ? +((cardsWithBug / tasks.length) * 100).toFixed(1) : 0;
+  const density = cardsWithBug > 0 ? +(totalBugs / cardsWithBug).toFixed(1) : 0;
+
+  return { total: tasks.length, completed, wip: tasks.length - completed, totalBugs, cardsWithBug, cardsNoBug, bugRate, density, byProject, bugsByProject, monthly };
+}
+
+// --- Renderização ---
+
+function render(tasks, s) {
+  renderKPIs(s);
+  renderCharts(s);
+  renderBugsTable(tasks);
+}
+
+function renderKPIs(s) {
+  const kpis = [
+    { val: s.total, lbl: 'Total Cards', cls: '' },
+    { val: s.wip, lbl: 'Em Andamento', cls: 'yellow' },
+    { val: s.completed, lbl: 'Finalizados', cls: 'green' },
+    { val: s.totalBugs, lbl: 'Total de Relatos', cls: 'cyan' },
+    { val: s.cardsNoBug, lbl: 'Cards sem Bugs', cls: 'green' },
+    { val: s.bugRate + '%', lbl: 'Taxa de Bugs', cls: 'red' },
+    { val: s.density, lbl: 'Média de bugs por cards', cls: 'blue' },
+  ];
+  document.getElementById('kpis').innerHTML = kpis.map(k =>
+    '<div class="kpi ' + k.cls + '"><div class="tip">' + (KPI_TIPS[k.lbl] || '') + '</div><div class="val">' + k.val + '</div><div class="lbl">' + k.lbl + '</div></div>'
+  ).join('');
+}
+
+function renderCharts(s) {
+  Object.values(charts).forEach(c => c.destroy());
+  charts = {};
+
+  const projects = VALID_PROJECTS.filter(p => s.byProject[p]);
+  const months = Object.keys(s.monthly).sort();
+  const monthsBR = months.map(m => { const [y, mo] = m.split('-'); return mo + '/' + y; });
+
+  // Rosca: Cards por Projeto
+  charts.projects = new ApexCharts(document.getElementById('chartProjects'), {
+    chart: { type: 'donut', height: 320, background: 'transparent', foreColor: '#6b6b80' },
+    series: projects.map(p => s.byProject[p]),
+    labels: projects,
+    colors: projects.map(getColor),
+    legend: { position: 'bottom', fontSize: '12px', markers: { radius: 12 } },
+    dataLabels: { enabled: true, formatter: (val) => val.toFixed(0) + '%', style: { fontSize: '12px', fontWeight: 600 }, dropShadow: { enabled: false } },
+    plotOptions: { pie: { donut: { size: '70%', labels: { show: true, name: { fontSize: '14px', fontWeight: 600 }, value: { fontSize: '22px', fontWeight: 700 }, total: { show: true, label: 'Total', fontSize: '13px', formatter: (w) => w.globals.seriesTotals.reduce((a, b) => a + b, 0) } } } } },
+    stroke: { width: 3, colors: ['#fff'] },
+    tooltip: { theme: 'light' }
+  });
+
+  // Rosca: Bugs por Projeto
+  charts.bugs = new ApexCharts(document.getElementById('chartBugs'), {
+    chart: { type: 'donut', height: 320, background: 'transparent', foreColor: '#6b6b80' },
+    series: projects.map(p => s.bugsByProject[p] || 0),
+    labels: projects,
+    colors: projects.map(getColor),
+    legend: { position: 'bottom', fontSize: '12px', markers: { radius: 12 } },
+    dataLabels: { enabled: true, formatter: (val) => val.toFixed(0) + '%', style: { fontSize: '12px', fontWeight: 600 }, dropShadow: { enabled: false } },
+    plotOptions: { pie: { donut: { size: '70%', labels: { show: true, name: { fontSize: '14px', fontWeight: 600 }, value: { fontSize: '22px', fontWeight: 700 }, total: { show: true, label: 'Total', fontSize: '13px', formatter: (w) => w.globals.seriesTotals.reduce((a, b) => a + b, 0) } } } } },
+    stroke: { width: 3, colors: ['#fff'] },
+    tooltip: { theme: 'light' }
+  });
+
+  // Barras: Densidade
+  const densityData = projects.map(p => s.byProject[p] > 0 ? +((s.bugsByProject[p] || 0) / s.byProject[p]).toFixed(1) : 0);
+  charts.density = new ApexCharts(document.getElementById('chartDensity'), {
+    ...chartTheme, type: 'bar', height: 300,
+    series: [{ name: 'Densidade', data: densityData }],
+    xaxis: { categories: projects },
+    colors: ['#7c3aed'],
+    dataLabels: { enabled: true },
+    plotOptions: { bar: { borderRadius: 4 } }
+  });
+
+  // Linha: Evolução Mensal
+  charts.monthly = new ApexCharts(document.getElementById('chartMonthly'), {
+    ...chartTheme, type: 'line', height: 160,
+    series: [
+      { name: 'Criados', data: months.map(m => s.monthly[m].total) },
+      { name: 'Finalizados', data: months.map(m => s.monthly[m].completed) },
+      { name: 'Relatos', data: months.map(m => s.monthly[m].bugs) }
+    ],
+    xaxis: { categories: monthsBR },
+    colors: ['#7c3aed', '#059669', '#dc2626'],
+    stroke: { curve: 'smooth', width: 2.5 },
+    markers: { size: 4 }
+  });
+
+  Object.values(charts).forEach(c => c.render());
+}
+
+function renderBugsTable(tasks) {
+  const data = tasks.filter(t => t.bugs > 0).sort((a, b) => b.bugs - a.bugs).slice(0, 20);
+  const rows = data.map((t, i) =>
+    '<tr><td>' + (i+1) + '</td><td title="' + t.name + '">' + (t.name.length > 65 ? t.name.slice(0,65) + '…' : t.name) + '</td><td style="color:#dc2626;font-weight:700;text-align:center">' + t.bugs + '</td><td>' + (t.projects.join(', ') || '—') + '</td><td>' + t.section + '</td></tr>'
+  ).join('');
+  document.getElementById('bugsTable').innerHTML = '<table class="bugs-table"><thead><tr><th>#</th><th>Card</th><th>Relatos</th><th>Projeto</th><th>Status</th></tr></thead><tbody>' + (rows || '<tr><td colspan="5" style="text-align:center;color:var(--dim)">Nenhum card com bugs</td></tr>') + '</tbody></table>';
+}
+
+function exportCSV() {
+  const f = getFiltered();
+  const data = f.filter(t => t.bugs > 0).sort((a, b) => b.bugs - a.bugs);
+  const header = 'Card;Relatos;Projeto;Status\n';
+  const rows = data.map(t => `"${t.name}";${t.bugs};"${t.projects.join(', ')}";"${t.section}"`).join('\n');
+  const blob = new Blob(['\uFEFF' + header + rows], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'relatos-qa-' + new Date().toISOString().split('T')[0] + '.csv';
+  link.click();
+}
+
+// Auto-refresh a cada 5 minutos
+setInterval(async () => {
+  try {
+    const res = await fetch('/api/data');
+    if (!res.ok) return;
+    const { tasks, projects } = await res.json();
+    VALID_PROJECTS = projects;
+    allTasks = tasks.filter(t => t.projects.length > 0);
+    document.getElementById('updateTime').textContent = new Date().toLocaleString('pt-BR');
+    applyFilters();
+  } catch {}
+}, 5 * 60 * 1000);
+
+init();
+</script>
+</body>
+</html>

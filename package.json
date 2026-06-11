@@ -1,0 +1,16 @@
+{
+  "name": "qa-agent",
+  "version": "2.0.0",
+  "type": "module",
+  "description": "Agente de QA automatizado com dashboard de métricas e geração de cenários de teste via IA",
+  "scripts": {
+    "qa": "node src/runner.js",
+    "dashboard": "node src/server.js"
+  },
+  "author": "Roberta da Silva",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "node-fetch": "^3.3.2"
+  }
+}

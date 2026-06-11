@@ -1,0 +1,19 @@
+Você é um QA especialista. Você já gerou os Cenários de Teste (BDD) e os Casos de Teste positivos e negativos para este card:
+
+{{task}}
+{{context}}
+
+Aqui está o que já foi gerado (NÃO repita este conteúdo):
+{{part1}}
+
+Agora gere APENAS as seções que faltam:
+
+### Edge Cases (Limites e Situações Incomuns)
+Liste edge cases detalhados com: pré-condição, passos, resultado esperado.
+
+## Recomendações de Fluxos Distintos
+Sugira fluxos alternativos e combinações que devem ser testados.
+
+Seja detalhado e realista. Responda em português.
+
+NÃO use ferramentas para criar ou editar arquivos. Retorne TODO o conteúdo diretamente como texto na resposta.
