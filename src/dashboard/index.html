@@ -20,12 +20,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .app{display:none;max-width:1500px;margin:0 auto;padding:24px 32px}
 header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
 header h1{font-size:1.4rem;font-weight:700;color:var(--accent)}
-header .actions{display:flex;gap:10px;align-items:center}
 header .meta{font-size:.72rem;color:var(--dim)}
 .btn{padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:.75rem;cursor:pointer;transition:all .15s}
 .btn:hover{border-color:var(--accent);color:var(--accent)}
-.btn-accent{background:var(--accent);color:#fff;border-color:var(--accent)}
-.btn-accent:hover{background:#6d28d9}
 .filters{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
 .filters select,.filters input{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:7px 12px;border-radius:8px;font-size:.8rem;font-family:inherit}
 .filters select:focus,.filters input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(124,58,237,.12)}
@@ -58,7 +55,7 @@ footer strong{color:var(--accent)}
 .bugs-table td{padding:7px 8px;border-bottom:1px solid var(--bg)}
 .bugs-table tr:hover td{background:rgba(124,58,237,.03)}
 @media(max-width:900px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
-@media print{.filters,.actions,.info-icon,.tip{display:none}}
+@media print{.filters,.info-icon,.tip{display:none}}
 .app.filtering .kpis,.app.filtering .section{opacity:.4;pointer-events:none;transition:opacity .15s}
 </style>
 </head>
@@ -68,11 +65,10 @@ footer strong{color:var(--accent)}
 <div class="app" id="app">
 <header>
   <div><h1>📊 Dashboard QA</h1><p class="meta">Features de Lançamento - Desde Jan/2026 | <span id="updateTime"></span></p></div>
-  <div class="actions"><button class="btn" onclick="exportCSV()">📄 CSV</button><button class="btn btn-accent" onclick="window.print()">📥 Exportar</button></div>
 </header>
 <div class="filters">
   <div><label>Projeto</label><select id="fProject"><option value="">Todos</option></select></div>
-  <div><label>Status</label><select id="fSection"><option value="">Todos</option><option value="Finalizado">Finalizado</option><option value="Em andamento">Em andamento</option></select></div>
+  <div><label>Status</label><select id="fSection"><option value="">Todos</option><option value="Finalizado">Finalizado</option><option value="Em andamento">Não finalizado</option></select></div>
   <div><label>De</label><input type="text" id="fFrom" readonly></div>
   <div><label>Até</label><input type="text" id="fTo" readonly></div>
   <button class="btn" onclick="applyFilters()">Filtrar</button>
@@ -82,45 +78,28 @@ footer strong{color:var(--accent)}
 <div class="kpis" id="kpis"></div>
 
 <div class="section">
-  <div class="section-title">📦 Volume por Projeto</div>
+  <div class="section-title">📦 Visão Geral</div>
   <div class="grid">
     <div class="card">
-      <div class="card-header"><div><div class="card-title">Cards Testados por Projeto</div></div><span class="info-icon" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">?</span></div>
-      <div class="card-info">Quantidade de cards de QA em cada projeto (identificado pela tag no Asana). Cada card é atribuído ao seu projeto principal.</div>
-      <div class="card-desc">Distribuição de cards testados pelo QA por projeto.</div>
-      <div id="chartProjects"></div>
+      <div class="card-header"><div><div class="card-title">Bugs por Projeto</div></div><span class="info-icon" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">?</span></div>
+      <div class="card-info">Total de bugs reportados pelo QA em cada projeto.<br><br><b>Taxa de bugs:</b> % de cards onde o QA encontrou pelo menos 1 bug. Ex: 60% = a cada 10 cards testados, 6 tinham problema.<br><br><b>Densidade:</b> média de bugs por card com problema. Ex: 3.5 = cada card com bug teve em média 3.5 relatos.</div>
+      <div id="chartBugsPerProject"></div>
     </div>
     <div class="card">
-      <div class="card-header"><div><div class="card-title">Relatos de Bugs por Projeto</div></div><span class="info-icon" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">?</span></div>
-      <div class="card-info">Soma do campo "Número de relatos dos usuários" agrupado por projeto. Cada card é atribuído ao seu projeto principal.</div>
-      <div class="card-desc">Total de bugs reportados pelo QA em cada projeto.</div>
-      <div id="chartBugs"></div>
-    </div>
-  </div>
-</div>
-
-<div class="section">
-  <div class="section-title">🎯 Qualidade</div>
-  <div class="grid grid-1">
-    <div class="card">
-      <div class="card-header"><div><div class="card-title">Densidade de Bugs por Projeto</div></div><span class="info-icon" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">?</span></div>
-      <div class="card-info"><b>Fórmula:</b> total de relatos ÷ total de cards do projeto.<br><br>Indica quantos bugs em média o QA encontra por card. Valores acima de 5 indicam projetos que precisam de mais atenção.</div>
-      <div class="card-desc">Média de bugs reportados por card em cada projeto.</div>
-      <div id="chartDensity"></div>
-    </div>
-  </div>
-</div>
-
-<div class="section">
-  <div class="section-title">📈 Evolução Mensal</div>
-  <div class="grid grid-1">
-    <div class="card">
-      <div class="card-header"><div><div class="card-title">Cards Criados, Finalizados e Relatos por Mês</div></div><span class="info-icon" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">?</span></div>
-      <div class="card-info"><b>Criados:</b> novos cards abertos no mês<br><b>Finalizados:</b> cards movidos para "Finalizado"<br><b>Relatos:</b> total de bugs reportados pelo QA no mês<br><br>Ideal: finalizados acompanhando criados e relatos em tendência de queda.</div>
-      <div class="card-desc">Visão mensal do fluxo de QA.</div>
+      <div class="card-header"><div><div class="card-title">Evolução Mensal</div></div><span class="info-icon" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">?</span></div>
+      <div class="card-info"><b>Criados:</b> cards abertos no mês<br><b>Finalizados:</b> cards criados no mês que estão na seção "Finalizado"<br><b>Relatos:</b> soma de bugs dos cards criados no mês</div>
       <div id="chartMonthly"></div>
     </div>
   </div>
+</div>
+
+<div class="section">
+  <div class="section-title">⏱️ Tempo Médio de Teste por Tamanho</div>
+  <div class="grid grid-1"><div class="card">
+    <div class="card-header"><div><div class="card-title">Tempo médio de teste por tamanho de demanda</div></div><span class="info-icon" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">?</span></div>
+    <div class="card-info">⚠️ Os valores não são 100% precisos devido à falta de informações de ociosidade. O tempo pode estar levemente alterado por conta de períodos de espera entre novas correções dos devs e retestes.</div>
+    <div id="cycleTimeTable"></div>
+  </div></div>
 </div>
 
 <div class="section">
@@ -140,18 +119,16 @@ let allTasks = [];
 let charts = {};
 let VALID_PROJECTS = [];
 
-const COLORS = {'API':'#3b82f6','APP CAMPO':'#10b981','APP SOCIAL':'#ec4899','GOV':'#8b5cf6','IFRAME':'#f59e0b','PORTAL':'#f97316','Whatsapp':'#0891b2'};
+const COLORS = {'API':'#3b82f6','APP CAMPO':'#10b981','APP SOCIAL':'#ec4899','GOV':'#8b5cf6','PORTAL':'#f97316','Whatsapp':'#0891b2'};
 const getColor = (name) => COLORS[name] || '#6366f1';
+const displayName = (name) => ({ 'Whatsapp': 'WhatsApp', 'APP CAMPO': 'App Campo', 'APP SOCIAL': 'App Social', 'GOV': 'Gov', 'PORTAL': 'Portal', 'API': 'API' }[name] || name);
 const chartTheme = {chart:{background:'transparent',foreColor:'#6b6b80'},grid:{borderColor:'#e2e2ea'},tooltip:{theme:'light'}};
 
 const KPI_TIPS = {
-  'Total Cards': 'Total de cards de QA no período selecionado.',
-  'Finalizados': 'Cards que estão na seção "Finalizado" no Asana.',
-  'Em Andamento': 'Cards que ainda não foram finalizados.',
+  'Total Cards': 'Total de cards de QA no período/filtro selecionado.',
+  'Finalizados': 'Cards na seção "Finalizado" do Asana, dentro do filtro atual.',
   'Taxa de Bugs': 'Percentual de cards onde o QA encontrou bugs (tag "Prevenção"). Fórmula: cards com bug ÷ total × 100.',
-  'Total de Relatos': 'Soma de todos os bugs reportados pelo QA (campo "Número de relatos dos usuários").',
-  'Cards sem Bugs': 'Cards com a tag "N/BUGS" — testados pelo QA sem nenhum bug encontrado.',
-  'Média de bugs por cards': 'Média de relatos por card que teve bug. Fórmula: total relatos ÷ cards com bug.'
+  'Total de Relatos': 'Soma de todos os bugs reportados pelo QA (campo "Número de relatos dos usuários" no Asana).'
 };
 
 // --- Inicialização ---
@@ -180,7 +157,7 @@ async function init() {
 function populateFilters() {
   const projects = VALID_PROJECTS.filter(p => allTasks.some(t => t.projects.includes(p)));
   const sel = document.getElementById('fProject');
-  projects.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; sel.appendChild(o); });
+  projects.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = displayName(p); sel.appendChild(o); });
   const fpOpts = { locale: 'pt', dateFormat: 'd/m/Y', minDate: new Date(2026, 0, 1) };
   window.fpFrom = flatpickr('#fFrom', { ...fpOpts, defaultDate: new Date(2026, 0, 1) });
   window.fpTo = flatpickr('#fTo', { ...fpOpts, defaultDate: new Date() });
@@ -231,22 +208,19 @@ function resetFilters() {
 // --- Cálculos ---
 
 function computeStats(tasks, filterProj) {
-  const byProject = {}, bugsByProject = {}, monthly = {};
-  let totalBugs = 0, completed = 0, cardsWithBug = 0, cardsNoBug = 0;
+  const byProject = {}, bugsByProject = {}, cardsWithBugByProject = {}, monthly = {};
+  let totalBugs = 0, completed = 0, cardsWithBug = 0;
 
   for (const t of tasks) {
     if (t.isFinished) completed++;
     if (t.hasBug) cardsWithBug++;
-    if (t.noBug) cardsNoBug++;
     totalBugs += t.bugs;
 
-    if (filterProj) {
-      byProject[filterProj] = (byProject[filterProj] || 0) + 1;
-      bugsByProject[filterProj] = (bugsByProject[filterProj] || 0) + t.bugs;
-    } else {
-      const p = t.projects[0];
+    const p = filterProj || t.projects[0];
+    if (p) {
       byProject[p] = (byProject[p] || 0) + 1;
       bugsByProject[p] = (bugsByProject[p] || 0) + t.bugs;
+      if (t.hasBug) cardsWithBugByProject[p] = (cardsWithBugByProject[p] || 0) + 1;
     }
 
     if (!monthly[t.month]) monthly[t.month] = { total: 0, bugs: 0, completed: 0 };
@@ -256,9 +230,8 @@ function computeStats(tasks, filterProj) {
   }
 
   const bugRate = tasks.length > 0 ? +((cardsWithBug / tasks.length) * 100).toFixed(1) : 0;
-  const density = cardsWithBug > 0 ? +(totalBugs / cardsWithBug).toFixed(1) : 0;
 
-  return { total: tasks.length, completed, wip: tasks.length - completed, totalBugs, cardsWithBug, cardsNoBug, bugRate, density, byProject, bugsByProject, monthly };
+  return { total: tasks.length, completed, totalBugs, cardsWithBug, bugRate, byProject, bugsByProject, cardsWithBugByProject, monthly };
 }
 
 // --- Renderização ---
@@ -267,17 +240,15 @@ function render(tasks, s) {
   renderKPIs(s);
   renderCharts(s);
   renderBugsTable(tasks);
+  renderCycleTime(tasks);
 }
 
 function renderKPIs(s) {
   const kpis = [
     { val: s.total, lbl: 'Total Cards', cls: '' },
-    { val: s.wip, lbl: 'Em Andamento', cls: 'yellow' },
     { val: s.completed, lbl: 'Finalizados', cls: 'green' },
-    { val: s.totalBugs, lbl: 'Total de Relatos', cls: 'cyan' },
-    { val: s.cardsNoBug, lbl: 'Cards sem Bugs', cls: 'green' },
     { val: s.bugRate + '%', lbl: 'Taxa de Bugs', cls: 'red' },
-    { val: s.density, lbl: 'Média de bugs por cards', cls: 'blue' },
+    { val: s.totalBugs, lbl: 'Total de Relatos', cls: 'cyan' },
   ];
   document.getElementById('kpis').innerHTML = kpis.map(k =>
     '<div class="kpi ' + k.cls + '"><div class="tip">' + (KPI_TIPS[k.lbl] || '') + '</div><div class="val">' + k.val + '</div><div class="lbl">' + k.lbl + '</div></div>'
@@ -288,53 +259,37 @@ function renderCharts(s) {
   Object.values(charts).forEach(c => c.destroy());
   charts = {};
 
+  const filterProj = document.getElementById('fProject').value;
   const projects = VALID_PROJECTS.filter(p => s.byProject[p]);
   const months = Object.keys(s.monthly).sort();
   const monthsBR = months.map(m => { const [y, mo] = m.split('-'); return mo + '/' + y; });
 
-  // Rosca: Cards por Projeto
-  charts.projects = new ApexCharts(document.getElementById('chartProjects'), {
-    chart: { type: 'donut', height: 320, background: 'transparent', foreColor: '#6b6b80' },
-    series: projects.map(p => s.byProject[p]),
-    labels: projects,
-    colors: projects.map(getColor),
-    legend: { position: 'bottom', fontSize: '12px', markers: { radius: 12 } },
-    dataLabels: { enabled: true, formatter: (val) => val.toFixed(0) + '%', style: { fontSize: '12px', fontWeight: 600 }, dropShadow: { enabled: false } },
-    plotOptions: { pie: { donut: { size: '70%', labels: { show: true, name: { fontSize: '14px', fontWeight: 600 }, value: { fontSize: '22px', fontWeight: 700 }, total: { show: true, label: 'Total', fontSize: '13px', formatter: (w) => w.globals.seriesTotals.reduce((a, b) => a + b, 0) } } } } },
-    stroke: { width: 3, colors: ['#fff'] },
-    tooltip: { theme: 'light' }
-  });
-
-  // Rosca: Bugs por Projeto
-  charts.bugs = new ApexCharts(document.getElementById('chartBugs'), {
-    chart: { type: 'donut', height: 320, background: 'transparent', foreColor: '#6b6b80' },
-    series: projects.map(p => s.bugsByProject[p] || 0),
-    labels: projects,
-    colors: projects.map(getColor),
-    legend: { position: 'bottom', fontSize: '12px', markers: { radius: 12 } },
-    dataLabels: { enabled: true, formatter: (val) => val.toFixed(0) + '%', style: { fontSize: '12px', fontWeight: 600 }, dropShadow: { enabled: false } },
-    plotOptions: { pie: { donut: { size: '70%', labels: { show: true, name: { fontSize: '14px', fontWeight: 600 }, value: { fontSize: '22px', fontWeight: 700 }, total: { show: true, label: 'Total', fontSize: '13px', formatter: (w) => w.globals.seriesTotals.reduce((a, b) => a + b, 0) } } } } },
-    stroke: { width: 3, colors: ['#fff'] },
-    tooltip: { theme: 'light' }
-  });
-
-  // Barras: Densidade
-  const densityData = projects.map(p => s.byProject[p] > 0 ? +((s.bugsByProject[p] || 0) / s.byProject[p]).toFixed(1) : 0);
-  charts.density = new ApexCharts(document.getElementById('chartDensity'), {
-    ...chartTheme, type: 'bar', height: 300,
-    series: [{ name: 'Densidade', data: densityData }],
-    xaxis: { categories: projects },
-    colors: ['#7c3aed'],
-    dataLabels: { enabled: true },
-    plotOptions: { bar: { borderRadius: 4 } }
-  });
+  // Barras: Bugs por Projeto
+  charts.bugsPerProject = new ApexCharts(document.getElementById('chartBugsPerProject'), {
+      ...chartTheme, type: 'bar', height: 200,
+      series: [{ name: 'Relatos', data: projects.map(p => s.bugsByProject[p] || 0) }],
+      xaxis: { categories: projects.map(displayName) },
+      colors: projects.map(getColor),
+      plotOptions: { bar: { borderRadius: 4, distributed: true, horizontal: true } },
+      dataLabels: { enabled: true },
+      legend: { show: false },
+      tooltip: { custom: function({ dataPointIndex }) {
+        const p = projects[dataPointIndex];
+        const bugs = s.bugsByProject[p] || 0;
+        const total = s.byProject[p] || 0;
+        const withBug = s.cardsWithBugByProject[p] || 0;
+        const taxa = total > 0 ? ((withBug / total) * 100).toFixed(0) : 0;
+        const densidade = withBug > 0 ? (bugs / withBug).toFixed(1) : 0;
+        return '<div style="padding:8px 12px;font-size:.75rem;line-height:1.6"><b>' + displayName(p) + '</b><br>Relatos: <b>' + bugs + '</b><br>Taxa de bugs: <b>' + taxa + '%</b><br>Densidade: <b>' + densidade + '</b></div>';
+      }}
+    });
 
   // Linha: Evolução Mensal
   charts.monthly = new ApexCharts(document.getElementById('chartMonthly'), {
-    ...chartTheme, type: 'line', height: 160,
+    ...chartTheme, type: 'line', height: 200,
     series: [
       { name: 'Criados', data: months.map(m => s.monthly[m].total) },
-      { name: 'Finalizados', data: months.map(m => s.monthly[m].completed) },
+      { name: 'Finalizados (por mês de criação)', data: months.map(m => s.monthly[m].completed) },
       { name: 'Relatos', data: months.map(m => s.monthly[m].bugs) }
     ],
     xaxis: { categories: monthsBR },
@@ -349,21 +304,29 @@ function renderCharts(s) {
 function renderBugsTable(tasks) {
   const data = tasks.filter(t => t.bugs > 0).sort((a, b) => b.bugs - a.bugs).slice(0, 20);
   const rows = data.map((t, i) =>
-    '<tr><td>' + (i+1) + '</td><td title="' + t.name + '">' + (t.name.length > 65 ? t.name.slice(0,65) + '…' : t.name) + '</td><td style="color:#dc2626;font-weight:700;text-align:center">' + t.bugs + '</td><td>' + (t.projects.join(', ') || '—') + '</td><td>' + t.section + '</td></tr>'
+    '<tr><td>' + (i+1) + '</td><td title="' + t.name + '">' + (t.name.length > 65 ? t.name.slice(0,65) + '…' : t.name) + '</td><td style="color:#dc2626;font-weight:700;text-align:center">' + t.bugs + '</td><td>' + (t.projects.map(displayName).join(', ') || '—') + '</td><td>' + t.section + '</td></tr>'
   ).join('');
   document.getElementById('bugsTable').innerHTML = '<table class="bugs-table"><thead><tr><th>#</th><th>Card</th><th>Relatos</th><th>Projeto</th><th>Status</th></tr></thead><tbody>' + (rows || '<tr><td colspan="5" style="text-align:center;color:var(--dim)">Nenhum card com bugs</td></tr>') + '</tbody></table>';
 }
 
-function exportCSV() {
-  const f = getFiltered();
-  const data = f.filter(t => t.bugs > 0).sort((a, b) => b.bugs - a.bugs);
-  const header = 'Card;Relatos;Projeto;Status\n';
-  const rows = data.map(t => `"${t.name}";${t.bugs};"${t.projects.join(', ')}";"${t.section}"`).join('\n');
-  const blob = new Blob(['\uFEFF' + header + rows], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'relatos-qa-' + new Date().toISOString().split('T')[0] + '.csv';
-  link.click();
+function renderCycleTime(tasks) {
+  const sizes = ['micro', 'p', 'm', 'g', 'gg'];
+  const data = {};
+  sizes.forEach(s => { data[s] = { total: 0, count: 0 }; });
+
+  for (const t of tasks) {
+    if (t.size && t.cycleHours) {
+      data[t.size].total += t.cycleHours;
+      data[t.size].count++;
+    }
+  }
+
+  const rows = sizes.map(s => {
+    const avg = data[s].count > 0 ? (data[s].total / data[s].count).toFixed(1) : '—';
+    return '<tr><td style="font-weight:600;text-transform:uppercase">' + s + '</td><td style="text-align:center">' + data[s].count + '</td><td style="text-align:center;font-weight:700;color:var(--accent)">' + (avg === '—' ? avg : avg + 'h') + '</td></tr>';
+  }).join('');
+
+  document.getElementById('cycleTimeTable').innerHTML = '<table class="bugs-table"><thead><tr><th style="text-align:left">Tamanho</th><th style="text-align:center">Cards</th><th style="text-align:center">Tempo médio</th></tr></thead><tbody>' + (rows || '') + '</tbody></table>';
 }
 
 // Auto-refresh a cada 5 minutos

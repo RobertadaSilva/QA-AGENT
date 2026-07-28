@@ -5,7 +5,8 @@
   "description": "Agente de QA automatizado com dashboard de métricas e geração de cenários de teste via IA",
   "scripts": {
     "qa": "node src/runner.js",
-    "dashboard": "node src/server.js"
+    "dashboard": "node src/server.js",
+    "test": "node --test tests/*.test.js"
   },
   "author": "Roberta da Silva",
   "license": "ISC",

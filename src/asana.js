@@ -8,16 +8,45 @@ if (!ASANA_TOKEN) {
 }
 
 const headers = { Authorization: `Bearer ${ASANA_TOKEN}` };
+const TIMEOUT_MS = 15000;
+const MAX_RETRIES = 3;
+
+async function fetchWithTimeout(url, options = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  try {
+    const res = await fetch(url, { ...options, signal: controller.signal });
+    return res;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function fetchWithRetry(url, options = {}, retries = MAX_RETRIES) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const res = await fetchWithTimeout(url, options);
+      return res;
+    } catch (err) {
+      const isLast = attempt === retries;
+      const isTimeout = err.name === 'AbortError';
+      const msg = isTimeout ? 'timeout (15s)' : err.message;
+      if (isLast) throw new Error(`Falha após ${retries} tentativas (último erro: ${msg})`);
+      console.log(`   ⚠️  Tentativa ${attempt}/${retries} falhou (${msg}). Retentando em ${attempt * 2}s...`);
+      await new Promise(r => setTimeout(r, attempt * 2000));
+    }
+  }
+}
 
 export async function getTask(taskId) {
-  const res = await fetch(`https://app.asana.com/api/1.0/tasks/${taskId}`, { headers });
+  const res = await fetchWithRetry(`https://app.asana.com/api/1.0/tasks/${taskId}?opt_fields=name,notes,custom_fields.name,custom_fields.display_value`, { headers });
   if (!res.ok) throw new Error(`Asana API ${res.status}: ${res.statusText}`);
   const data = await res.json();
   return data.data;
 }
 
 export async function getSubtasks(taskId) {
-  const res = await fetch(`https://app.asana.com/api/1.0/tasks/${taskId}/subtasks?opt_fields=name,notes,completed`, { headers });
+  const res = await fetchWithRetry(`https://app.asana.com/api/1.0/tasks/${taskId}/subtasks?opt_fields=name,notes,completed`, { headers });
   if (!res.ok) return [];
   const data = await res.json();
   return data.data || [];
@@ -81,7 +110,7 @@ export async function createTask({ projectId, sectionId, name, notes }) {
     const cut = lastSection > 0 ? truncated.slice(0, lastSection) : truncated;
     htmlNotes = mdToAsanaHtml(cut + '\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n⚠️ Documento truncado por limite do Asana.');
   }
-  const res = await fetch('https://app.asana.com/api/1.0/tasks', {
+  const res = await fetchWithRetry('https://app.asana.com/api/1.0/tasks', {
     method: 'POST',
     headers: { ...headers, 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -101,3 +130,12 @@ export async function createTask({ projectId, sectionId, name, notes }) {
 //   });
 //   return res.json();
 // }
+
+export async function addTag(taskGid, tagGid) {
+  const res = await fetchWithRetry(`https://app.asana.com/api/1.0/tasks/${taskGid}/addTag`, {
+    method: 'POST',
+    headers: { ...headers, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: { tag: tagGid } })
+  });
+  if (!res.ok) throw new Error(`Erro ao adicionar tag: ${res.status}`);
+}
