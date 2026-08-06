@@ -1,0 +1,8 @@
+page:
+  url: https://www.google.com
+
+tasks:
+  - name: Verificar elemento que NÃO existe (simula regressão)
+    flow:
+      - ai: Aguarde a página carregar completamente
+      - aiAssert: Existe um botão vermelho escrito "Comprar Agora" na página
