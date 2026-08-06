@@ -26,7 +26,14 @@ jobs:
           MIDSCENE_MODEL_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           MIDSCENE_MODEL_BASE_URL: https://generativelanguage.googleapis.com/v1beta
           MIDSCENE_MODEL_FAMILY: gemini
-        run: midscene ./tests/smoke-google.yaml
+        run: |
+          FILES=$(find tests -name "*.yaml" | tr '\n' ' ')
+          if [ -z "$FILES" ]; then
+            echo "Nenhum teste YAML encontrado"
+            exit 0
+          fi
+          echo "Rodando: $FILES"
+          midscene $FILES
 
       - name: Upload report
         if: always()
