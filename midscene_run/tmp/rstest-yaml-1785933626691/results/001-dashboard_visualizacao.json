@@ -1,0 +1,17 @@
+{
+  "file": "C:\\Users\\Roberta\\OneDrive\\QA-AGENT\\tests\\dashboard_visualizacao.yaml",
+  "success": false,
+  "executed": true,
+  "duration": 1,
+  "resultType": "failed",
+  "error": "Environment variable \"BASE_URL\" is not defined",
+  "attempts": [
+    {
+      "attempt": 1,
+      "success": false,
+      "error": "Environment variable \"BASE_URL\" is not defined",
+      "duration": 1,
+      "resultType": "failed"
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+[2026-08-05T09:41:32.132-03:00] Midscene - Added base-select appearance style for select elements because of forceChromeSelectRendering is enabled
+[2026-08-05T09:41:32.143-03:00] evaluate function begin
+[2026-08-05T09:41:32.146-03:00] evaluate function end
+[2026-08-05T09:41:32.147-03:00] screenshotBase64 begin
+[2026-08-05T09:41:44.819-03:00] screenshotBase64 end, cost: 12671ms
+[2026-08-05T09:47:10.931-03:00] Midscene - Added base-select appearance style for select elements because of forceChromeSelectRendering is enabled
+[2026-08-05T09:47:10.941-03:00] evaluate function begin
+[2026-08-05T09:47:10.943-03:00] evaluate function end
+[2026-08-05T09:47:10.943-03:00] screenshotBase64 begin
+[2026-08-05T09:47:11.047-03:00] screenshotBase64 end, cost: 104ms
+[2026-08-05T09:47:18.648-03:00] screenshotBase64 begin
+[2026-08-05T09:47:18.739-03:00] screenshotBase64 end, cost: 91ms
+[2026-08-05T09:47:24.294-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:47:24.295-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:47:24.309-03:00] waitForNavigation end
+[2026-08-05T09:47:24.505-03:00] waitForNetworkIdle end
+[2026-08-05T09:47:24.506-03:00] screenshotBase64 begin
+[2026-08-05T09:47:24.594-03:00] screenshotBase64 end, cost: 87ms
+[2026-08-05T09:47:27.178-03:00] screenshotBase64 begin
+[2026-08-05T09:47:27.266-03:00] screenshotBase64 end, cost: 88ms
+[2026-08-05T09:47:32.803-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:47:32.804-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:47:32.810-03:00] waitForNavigation end
+[2026-08-05T09:47:33.006-03:00] waitForNetworkIdle end
+[2026-08-05T09:47:33.008-03:00] screenshotBase64 begin
+[2026-08-05T09:47:33.092-03:00] screenshotBase64 end, cost: 83ms
+[2026-08-05T09:47:36.493-03:00] screenshotBase64 begin
+[2026-08-05T09:47:36.576-03:00] screenshotBase64 end, cost: 82ms
+[2026-08-05T09:47:42.106-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:47:42.106-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:47:42.112-03:00] waitForNavigation end
+[2026-08-05T09:47:42.314-03:00] waitForNetworkIdle end
+[2026-08-05T09:47:42.315-03:00] screenshotBase64 begin
+[2026-08-05T09:47:42.408-03:00] screenshotBase64 end, cost: 93ms
+[2026-08-05T09:47:52.057-03:00] screenshotBase64 begin
+[2026-08-05T09:47:52.135-03:00] screenshotBase64 end, cost: 78ms
+[2026-08-05T09:47:57.676-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:47:57.677-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:47:57.683-03:00] waitForNavigation end
+[2026-08-05T09:47:57.892-03:00] waitForNetworkIdle end
+[2026-08-05T09:47:57.894-03:00] screenshotBase64 begin
+[2026-08-05T09:47:57.971-03:00] screenshotBase64 end, cost: 77ms
+[2026-08-05T09:48:02.195-03:00] screenshotBase64 begin
+[2026-08-05T09:48:02.272-03:00] screenshotBase64 end, cost: 76ms
+[2026-08-05T09:48:07.826-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:48:07.827-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:48:07.832-03:00] waitForNavigation end
+[2026-08-05T09:48:08.036-03:00] waitForNetworkIdle end
+[2026-08-05T09:48:08.037-03:00] screenshotBase64 begin
+[2026-08-05T09:48:08.112-03:00] screenshotBase64 end, cost: 75ms
+[2026-08-05T09:48:11.409-03:00] screenshotBase64 begin
+[2026-08-05T09:48:11.488-03:00] screenshotBase64 end, cost: 79ms
+[2026-08-05T09:48:22.025-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:48:22.026-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:48:22.030-03:00] waitForNavigation end
+[2026-08-05T09:48:22.233-03:00] waitForNetworkIdle end
+[2026-08-05T09:48:22.234-03:00] screenshotBase64 begin
+[2026-08-05T09:48:22.312-03:00] screenshotBase64 end, cost: 78ms
+[2026-08-05T09:48:25.848-03:00] screenshotBase64 begin
+[2026-08-05T09:48:25.920-03:00] screenshotBase64 end, cost: 72ms
+[2026-08-05T09:48:36.465-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:48:36.466-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:48:36.471-03:00] waitForNavigation end
+[2026-08-05T09:48:36.680-03:00] waitForNetworkIdle end
+[2026-08-05T09:48:36.681-03:00] screenshotBase64 begin
+[2026-08-05T09:48:36.766-03:00] screenshotBase64 end, cost: 84ms
+[2026-08-05T09:48:40.185-03:00] screenshotBase64 begin
+[2026-08-05T09:48:40.263-03:00] screenshotBase64 end, cost: 78ms
+[2026-08-05T09:48:50.796-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:48:50.797-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:48:50.802-03:00] waitForNavigation end
+[2026-08-05T09:48:51.005-03:00] waitForNetworkIdle end
+[2026-08-05T09:48:51.007-03:00] screenshotBase64 begin
+[2026-08-05T09:48:51.090-03:00] screenshotBase64 end, cost: 83ms
+[2026-08-05T09:48:54.930-03:00] screenshotBase64 begin
+[2026-08-05T09:48:55.012-03:00] screenshotBase64 end, cost: 82ms
+[2026-08-05T09:49:05.538-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:49:05.538-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:49:05.543-03:00] waitForNavigation end
+[2026-08-05T09:49:05.745-03:00] waitForNetworkIdle end
+[2026-08-05T09:49:05.745-03:00] screenshotBase64 begin
+[2026-08-05T09:49:05.828-03:00] screenshotBase64 end, cost: 82ms
+[2026-08-05T09:49:09.361-03:00] screenshotBase64 begin
+[2026-08-05T09:49:09.444-03:00] screenshotBase64 end, cost: 83ms
+[2026-08-05T09:49:19.977-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:49:19.977-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:49:19.981-03:00] waitForNavigation end
+[2026-08-05T09:49:20.185-03:00] waitForNetworkIdle end
+[2026-08-05T09:49:20.187-03:00] screenshotBase64 begin
+[2026-08-05T09:49:20.278-03:00] screenshotBase64 end, cost: 90ms
+[2026-08-05T09:49:44.790-03:00] screenshotBase64 begin
+[2026-08-05T09:49:44.876-03:00] screenshotBase64 end, cost: 86ms
+[2026-08-05T09:49:55.414-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:49:55.415-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:49:55.420-03:00] waitForNavigation end
+[2026-08-05T09:49:55.622-03:00] waitForNetworkIdle end
+[2026-08-05T09:49:55.623-03:00] screenshotBase64 begin
+[2026-08-05T09:49:55.714-03:00] screenshotBase64 end, cost: 90ms
+[2026-08-05T09:50:00.558-03:00] screenshotBase64 begin
+[2026-08-05T09:50:00.634-03:00] screenshotBase64 end, cost: 76ms
+[2026-08-05T09:50:06.090-03:00] screenshotBase64 begin
+[2026-08-05T09:50:06.168-03:00] screenshotBase64 end, cost: 77ms
+[2026-08-05T09:50:16.717-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:50:16.717-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:50:16.722-03:00] waitForNavigation end
+[2026-08-05T09:50:16.918-03:00] waitForNetworkIdle end
+[2026-08-05T09:50:16.920-03:00] screenshotBase64 begin
+[2026-08-05T09:50:17.008-03:00] screenshotBase64 end, cost: 88ms
+[2026-08-05T09:50:21.587-03:00] screenshotBase64 begin
+[2026-08-05T09:50:21.677-03:00] screenshotBase64 end, cost: 89ms
+[2026-08-05T09:50:32.217-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:50:32.218-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:50:32.222-03:00] waitForNavigation end
+[2026-08-05T09:50:32.432-03:00] waitForNetworkIdle end
+[2026-08-05T09:50:32.433-03:00] screenshotBase64 begin
+[2026-08-05T09:50:32.518-03:00] screenshotBase64 end, cost: 86ms
+[2026-08-05T09:50:43.035-03:00] screenshotBase64 begin
+[2026-08-05T09:50:43.117-03:00] screenshotBase64 end, cost: 81ms
+[2026-08-05T09:50:53.664-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:50:53.665-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:50:53.670-03:00] waitForNavigation end
+[2026-08-05T09:50:53.873-03:00] waitForNetworkIdle end
+[2026-08-05T09:50:53.875-03:00] screenshotBase64 begin
+[2026-08-05T09:50:53.959-03:00] screenshotBase64 end, cost: 85ms
+[2026-08-05T09:50:58.426-03:00] screenshotBase64 begin
+[2026-08-05T09:50:58.510-03:00] screenshotBase64 end, cost: 83ms
+[2026-08-05T09:51:09.053-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:51:09.053-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:51:09.058-03:00] waitForNavigation end
+[2026-08-05T09:51:09.266-03:00] waitForNetworkIdle end
+[2026-08-05T09:51:09.267-03:00] screenshotBase64 begin
+[2026-08-05T09:51:09.346-03:00] screenshotBase64 end, cost: 78ms
+[2026-08-05T09:52:35.712-03:00] screenshotBase64 begin
+[2026-08-05T09:52:35.794-03:00] screenshotBase64 end, cost: 83ms
+[2026-08-05T09:52:46.333-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:52:46.334-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:52:46.340-03:00] waitForNavigation end
+[2026-08-05T09:52:46.542-03:00] waitForNetworkIdle end
+[2026-08-05T09:52:46.543-03:00] screenshotBase64 begin
+[2026-08-05T09:52:46.627-03:00] screenshotBase64 end, cost: 83ms
+[2026-08-05T09:53:33.672-03:00] screenshotBase64 begin
+[2026-08-05T09:53:33.755-03:00] screenshotBase64 end, cost: 82ms
+[2026-08-05T09:53:44.292-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-05T09:53:44.293-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-05T09:53:44.310-03:00] waitForNavigation end
+[2026-08-05T09:53:44.501-03:00] waitForNetworkIdle end
+[2026-08-05T09:53:44.502-03:00] screenshotBase64 begin
+[2026-08-05T09:53:44.601-03:00] screenshotBase64 end, cost: 99ms
+[2026-08-06T08:50:40.611-03:00] screenshotBase64 begin
+[2026-08-06T08:50:40.612-03:00] Midscene - Added base-select appearance style for select elements because of forceChromeSelectRendering is enabled
+[2026-08-06T08:50:42.380-03:00] screenshotBase64 end, cost: 1770ms
+[2026-08-06T08:53:17.252-03:00] Midscene - Added base-select appearance style for select elements because of forceChromeSelectRendering is enabled
+[2026-08-06T08:53:17.264-03:00] evaluate function begin
+[2026-08-06T08:53:17.266-03:00] evaluate function end
+[2026-08-06T08:53:17.266-03:00] screenshotBase64 begin
+[2026-08-06T08:53:17.355-03:00] screenshotBase64 end, cost: 89ms
+[2026-08-06T08:53:20.494-03:00] screenshotBase64 begin
+[2026-08-06T08:53:20.589-03:00] screenshotBase64 end, cost: 95ms
+[2026-08-06T08:53:26.129-03:00] waitForNavigation begin at moment afterInvokeAction with timeout: 5000 and actionName: Sleep
+[2026-08-06T08:53:26.130-03:00] waitForNetworkIdle begin at moment afterInvokeAction with timeout: 2000 and concurrency: 2 and actionName: Sleep
+[2026-08-06T08:53:26.142-03:00] waitForNavigation end
+[2026-08-06T08:53:26.337-03:00] waitForNetworkIdle end
+[2026-08-06T08:53:26.337-03:00] screenshotBase64 begin
+[2026-08-06T08:53:26.391-03:00] screenshotBase64 end, cost: 53ms
+[2026-08-06T08:53:30.446-03:00] screenshotBase64 begin
+[2026-08-06T08:53:30.505-03:00] screenshotBase64 end, cost: 59ms
+[2026-08-06T08:53:33.076-03:00] screenshotBase64 begin
+[2026-08-06T08:53:33.132-03:00] screenshotBase64 end, cost: 56ms
+[2026-08-06T08:53:33.145-03:00] screenshotBase64 begin
+[2026-08-06T08:53:33.198-03:00] screenshotBase64 end, cost: 53ms
+[2026-08-06T08:53:38.535-03:00] screenshotBase64 begin
+[2026-08-06T08:53:38.608-03:00] screenshotBase64 end, cost: 73ms
+[2026-08-06T08:53:38.616-03:00] screenshotBase64 begin
+[2026-08-06T08:53:38.672-03:00] screenshotBase64 end, cost: 56ms

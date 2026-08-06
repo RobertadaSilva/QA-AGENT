@@ -1,0 +1,29 @@
+{
+  "summary": {
+    "total": 1,
+    "successful": 0,
+    "failed": 1,
+    "partialFailed": 0,
+    "notExecuted": 0,
+    "totalDuration": 1,
+    "generatedAt": "05/08/2026, 09:40:30"
+  },
+  "results": [
+    {
+      "script": "..\\..\\tests\\dashboard_visualizacao.yaml",
+      "success": false,
+      "resultType": "failed",
+      "attempts": [
+        {
+          "attempt": 1,
+          "success": false,
+          "resultType": "failed",
+          "error": "Environment variable \"BASE_URL\" is not defined",
+          "duration": 1
+        }
+      ],
+      "error": "Environment variable \"BASE_URL\" is not defined",
+      "duration": 1
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+page:
+  url: ${BASE_URL}
+
+tasks:
+  - name: Visualização de Métricas e KPIs no Dashboard
+    flow:
+      - ai: Aguarde até que o dashboard carregue completamente todas as informações.
+      - aiAssert: Verifique se os KPIs principais estão visíveis na tela (Total de cards, Finalizados, Taxa de bugs e Total de Relatos).

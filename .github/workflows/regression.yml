@@ -1,0 +1,37 @@
+name: Regressão E2E
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+jobs:
+  run-regression:
+    name: Executar regressão E2E
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar Midscene
+        run: npm install -g @midscene/cli
+
+      - name: Rodar testes de regressão
+        env:
+          MIDSCENE_MODEL_NAME: gemini-3.5-flash
+          MIDSCENE_MODEL_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MIDSCENE_MODEL_BASE_URL: https://generativelanguage.googleapis.com/v1beta
+          MIDSCENE_MODEL_FAMILY: gemini
+        run: midscene ./tests/smoke-google.yaml
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: midscene-report
+          path: midscene_run/report/
+          retention-days: 14

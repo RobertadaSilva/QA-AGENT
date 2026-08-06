@@ -1,0 +1,33 @@
+{
+  "summary": {
+    "total": 1,
+    "successful": 0,
+    "failed": 1,
+    "partialFailed": 0,
+    "notExecuted": 0,
+    "totalDuration": 24423,
+    "generatedAt": "06/08/2026, 08:53:38"
+  },
+  "results": [
+    {
+      "script": "..\\..\\tests\\dashboard_visualizacao.yaml",
+      "success": false,
+      "resultType": "failed",
+      "output": "./dashboard_visualizacao-1786017194370.json",
+      "report": "..\\report\\dashboard_visualizacao-2026-08-06_08-53-14-ad8bddcc.html",
+      "attempts": [
+        {
+          "attempt": 1,
+          "success": false,
+          "resultType": "failed",
+          "output": "./dashboard_visualizacao-1786017194370.json",
+          "report": "..\\report\\dashboard_visualizacao-2026-08-06_08-53-14-ad8bddcc.html",
+          "error": "Assertion failed: Verifique se os KPIs principais estão visíveis na tela (Total de cards, Finalizados, Em andamento, Taxa de bugs, Relatos e Densidade).\nReason: Based on the screenshot, the main KPIs visible at the top are:\n- \"TOTAL CARDS\" (212)\n- \"FINALIZADOS\" (210)\n- \"TAXA DE BUGS\" (53.3%)\n- \"TOTAL DE RELATOS\" (371)\n\nThe KPIs \"Em andamento\" and \"Densidade\" are not visible on the screen. Therefore, the statement is false.",
+          "duration": 24423
+        }
+      ],
+      "error": "Assertion failed: Verifique se os KPIs principais estão visíveis na tela (Total de cards, Finalizados, Em andamento, Taxa de bugs, Relatos e Densidade).\nReason: Based on the screenshot, the main KPIs visible at the top are:\n- \"TOTAL CARDS\" (212)\n- \"FINALIZADOS\" (210)\n- \"TAXA DE BUGS\" (53.3%)\n- \"TOTAL DE RELATOS\" (371)\n\nThe KPIs \"Em andamento\" and \"Densidade\" are not visible on the screen. Therefore, the statement is false.",
+      "duration": 24423
+    }
+  ]
+}

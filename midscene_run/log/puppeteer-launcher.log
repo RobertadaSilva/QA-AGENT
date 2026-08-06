@@ -1,0 +1,56 @@
+[2026-08-05T09:41:17.904-03:00] launching browser with viewport, headed true viewport { width: 1440, height: 800, deviceScaleFactor: 0 } args [
+  '--disable-features=HttpsFirstBalancedModeAutoEnable',
+  '--disable-features=PasswordLeakDetection',
+  '--disable-save-password-bubble',
+  '--user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"',
+  '--window-size=1440,900'
+] preference {
+  headed: true,
+  keepWindow: false,
+  reportFileName: 'dashboard_visualizacao-2026-08-05_09-41-17-dfe4f2ef',
+  cache: undefined
+}
+[2026-08-05T09:41:29.675-03:00] goto http://localhost:3000
+[2026-08-05T09:41:30.069-03:00] waitForNetworkIdle 2000
+[2026-08-05T09:47:07.630-03:00] launching browser with viewport, headed true viewport { width: 1440, height: 800, deviceScaleFactor: 0 } args [
+  '--disable-features=HttpsFirstBalancedModeAutoEnable',
+  '--disable-features=PasswordLeakDetection',
+  '--disable-save-password-bubble',
+  '--user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"',
+  '--window-size=1440,900'
+] preference {
+  headed: true,
+  keepWindow: false,
+  reportFileName: 'dashboard_visualizacao-2026-08-05_09-47-07-b9327766',
+  cache: undefined
+}
+[2026-08-05T09:47:08.356-03:00] goto http://localhost:3000
+[2026-08-05T09:47:08.884-03:00] waitForNetworkIdle 2000
+[2026-08-06T08:50:38.946-03:00] launching browser with viewport, headed true viewport { width: 1440, height: 800, deviceScaleFactor: 0 } args [
+  '--disable-features=HttpsFirstBalancedModeAutoEnable',
+  '--disable-features=PasswordLeakDetection',
+  '--disable-save-password-bubble',
+  '--user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"',
+  '--window-size=1440,900'
+] preference {
+  headed: true,
+  keepWindow: false,
+  reportFileName: 'dashboard_visualizacao-2026-08-06_08-50-38-584d87e7',
+  cache: undefined
+}
+[2026-08-06T08:50:39.625-03:00] goto http://localhost:3000
+[2026-08-06T08:50:40.078-03:00] waitForNetworkIdle 2000
+[2026-08-06T08:53:14.386-03:00] launching browser with viewport, headed true viewport { width: 1440, height: 800, deviceScaleFactor: 0 } args [
+  '--disable-features=HttpsFirstBalancedModeAutoEnable',
+  '--disable-features=PasswordLeakDetection',
+  '--disable-save-password-bubble',
+  '--user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"',
+  '--window-size=1440,900'
+] preference {
+  headed: true,
+  keepWindow: false,
+  reportFileName: 'dashboard_visualizacao-2026-08-06_08-53-14-ad8bddcc',
+  cache: undefined
+}
+[2026-08-06T08:53:14.883-03:00] goto http://localhost:3000
+[2026-08-06T08:53:15.204-03:00] waitForNetworkIdle 2000

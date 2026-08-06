@@ -1,0 +1,10 @@
+page:
+  url: ${BASE_URL}
+tasks:
+  - name: Filtragem e Interação no Dashboard
+    flow:
+      - ai: Localize os campos de filtros no topo da página.
+      - ai: Clique no filtro de "Projeto" e selecione uma das opções disponíveis.
+      - ai: Clique no filtro de "Status" e selecione "Finalizado" ou qualquer outro status disponível.
+      - ai: Clique no componente de calendário de período (em pt-BR), ajuste o período de busca a partir de "01/01/2026" e aplique.
+      - aiAssert: Valide se as métricas nos KPIs e os gráficos foram atualizados de acordo com os filtros aplicados de projeto, status e data.
