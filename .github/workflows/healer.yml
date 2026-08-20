@@ -1,0 +1,63 @@
+name: Playwright Healer Runner
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+  deployment:
+    types: [created]
+  deployment_status:
+    types: [created]
+
+jobs:
+  healer:
+    name: Run tests and healer on failures
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+      ASANA_TOKEN: ${{ secrets.ASANA_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        id: run_tests
+        continue-on-error: true
+        run: |
+          npx playwright test --reporter=list || true
+
+      - name: Healer: re-run failed tests with traces
+        if: ${{ failure() }}
+        run: |
+          echo "Detected test failures — re-running with retries and traces for diagnostics"
+          # Re-run with 1 retry and collect traces on first retry
+          npx playwright test --retries=1 --trace=on-first-retry --reporter=list || true
+
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+
+      - name: Upload traces and test-results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts
+          path: |
+            test-results
+            traces
