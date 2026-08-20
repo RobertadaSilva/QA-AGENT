@@ -56,7 +56,9 @@ jobs:
           echo "❌ Testes falharam — verificar relatório"
           echo "## ❌ Testes E2E falharam" >> $GITHUB_STEP_SUMMARY
           echo "Verifique o artifact playwright-report para detalhes." >> $GITHUB_STEP_SUMMARY
-          exit 1
+          # Não sair com erro aqui para permitir que o job finalize
+          # e que o job `healer-pr` (needs) seja acionado para tentar correção.
+          echo "Healer será acionado para tentar correção (se configurado)."
 
       - name: Upload relatório
         if: always()
@@ -67,11 +69,13 @@ jobs:
           retention-days: 7
 
       - name: Upload traces (falhas)
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results-pr
-          path: test-results/
+          path: |
+            test-results/
+            test-results.json
           retention-days: 7
 
   # ─── Healer para PRs: re-executa e tenta corrigir (gera PR com correções) ───
