@@ -1,14 +1,63 @@
+name: Playwright E2E Regression
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  e2e:
+    name: Run Playwright E2E
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+      ASANA_TOKEN: ci
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        run: npx playwright test --reporter=list
 name: Regressão E2E
 
 on:
   pull_request:
-    branches: [master]
+    branches: [master, main]
   push:
-    branches: [master]
+    branches: [master, main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Modo de execução'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - smoke
+
+env:
+  BASE_URL: http://localhost:3000
 
 jobs:
-  run-regression:
-    name: Executar regressão E2E
+  # ─── A cada PR: executa todos os testes existentes ──────────────────────────
+  test-pr:
+    name: "🧪 Testes E2E (PR)"
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,28 +66,103 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Instalar Midscene
-        run: npm install -g @midscene/cli
+      - name: Instalar dependências
+        run: npm ci
 
-      - name: Rodar testes de regressão
+      - name: Instalar browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Executar testes E2E
+        run: npx playwright test
         env:
-          MIDSCENE_MODEL_NAME: gemini-3.5-flash
-          MIDSCENE_MODEL_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          MIDSCENE_MODEL_BASE_URL: https://generativelanguage.googleapis.com/v1beta
-          MIDSCENE_MODEL_FAMILY: gemini
-        run: |
-          FILES=$(find tests -name "*.yaml" | tr '\n' ' ')
-          if [ -z "$FILES" ]; then
-            echo "Nenhum teste YAML encontrado"
-            exit 0
-          fi
-          echo "Rodando: $FILES"
-          midscene $FILES
+          CI: true
+          ASANA_TOKEN: ${{ secrets.ASANA_TOKEN }}
 
-      - name: Upload report
+      - name: Upload relatório
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: midscene-report
-          path: midscene_run/report/
+          name: playwright-report-pr
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Upload traces (falhas)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-pr
+          path: test-results/
+          retention-days: 7
+
+  # ─── A cada merge na main: suite completa ───────────────────────────────────
+  test-main:
+    name: "🧪 Testes E2E (Main)"
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Instalar browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Executar suite completa
+        run: npx playwright test
+        env:
+          CI: true
+          ASANA_TOKEN: ${{ secrets.ASANA_TOKEN }}
+
+      - name: Upload relatório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-main
+          path: playwright-report/
           retention-days: 14
+
+      - name: Upload traces (falhas)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-main
+          path: test-results/
+          retention-days: 14
+
+  # ─── Smoke test (manual / pós-deploy) ──────────────────────────────────────
+  smoke:
+    name: "🚨 Smoke Test"
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Instalar browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Executar smoke tests
+        run: npx playwright test --grep @smoke
+        env:
+          CI: true
+          BASE_URL: ${{ vars.PRODUCTION_URL || 'http://localhost:3000' }}
+          ASANA_TOKEN: ${{ secrets.ASANA_TOKEN }}
+
+      - name: Upload relatório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-smoke
+          path: playwright-report/
+          retention-days: 7
