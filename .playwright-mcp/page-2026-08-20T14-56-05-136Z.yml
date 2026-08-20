@@ -1,0 +1,299 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - heading "📊 Dashboard QA" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Features de Lançamento - Desde Jan/2026 | 20/08/2026, 11:56:04
+  - generic [ref=e7]:
+    - generic [ref=e8]:
+      - text: Projeto
+      - combobox [ref=e9]:
+        - option "Todos" [selected]
+        - option "API"
+        - option "App Campo"
+        - option "App Social"
+        - option "Gov"
+        - option "Portal"
+        - option "WhatsApp"
+    - generic [ref=e10]:
+      - text: Status
+      - combobox [ref=e11]:
+        - option "Todos" [selected]
+        - option "Finalizado"
+        - option "Não finalizado"
+    - generic [ref=e12]:
+      - text: De
+      - textbox [ref=e13] [cursor=pointer]: 01/01/2026
+    - generic [ref=e14]:
+      - text: Até
+      - textbox [ref=e15] [cursor=pointer]: 20/08/2026
+    - button "Filtrar" [ref=e16] [cursor=pointer]
+    - button "Limpar" [ref=e17] [cursor=pointer]
+    - generic [ref=e18]: 231 de 231 cards
+  - generic [ref=e19]:
+    - generic [ref=e20]:
+      - generic [ref=e21]: "231"
+      - generic [ref=e22]: Total Cards
+    - generic [ref=e23]:
+      - generic [ref=e24]: "230"
+      - generic [ref=e25]: Finalizados
+    - generic [ref=e26]:
+      - generic [ref=e27]: 52.4%
+      - generic [ref=e28]: Taxa de Bugs
+    - generic [ref=e29]:
+      - generic [ref=e30]: "385"
+      - generic [ref=e31]: Total de Relatos
+  - generic [ref=e32]:
+    - generic [ref=e33]: 📦 Visão Geral
+    - generic [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - generic [ref=e37]: Bugs por Projeto
+          - generic [ref=e39] [cursor=pointer]: "?"
+        - generic [ref=e41]:
+          - img [ref=e42]:
+            - generic [ref=e45]:
+              - generic "300" [ref=e46]
+              - generic "250" [ref=e47]
+              - generic "200" [ref=e48]
+              - generic "150" [ref=e49]
+              - generic "100" [ref=e50]
+              - generic "50" [ref=e51]
+              - generic "0" [ref=e52]
+            - generic [ref=e53]:
+              - generic [ref=e57]:
+                - generic:
+                  - generic:
+                    - generic: "12"
+                    - generic: "42"
+                  - generic: "59"
+                  - generic: "257"
+                  - generic: "11"
+                  - generic: "4"
+              - generic [ref=e60]:
+                - generic "API" [ref=e61]
+                - generic "App Campo" [ref=e62]
+                - generic "App Social" [ref=e63]
+                - generic "Gov" [ref=e64]
+                - generic "Portal" [ref=e65]
+                - generic "WhatsApp" [ref=e66]
+          - generic [ref=e67]:
+            - generic "Zoom In" [ref=e68] [cursor=pointer]
+            - generic "Zoom Out" [ref=e69] [cursor=pointer]
+            - generic "Selection Zoom" [ref=e70] [cursor=pointer]
+            - generic "Panning" [ref=e71] [cursor=pointer]
+            - generic "Reset Zoom" [ref=e72] [cursor=pointer]
+            - generic "Menu" [ref=e73] [cursor=pointer]
+            - generic:
+              - generic "Download SVG"
+              - generic "Download PNG"
+              - generic "Download CSV"
+      - generic [ref=e74]:
+        - generic [ref=e75]:
+          - generic [ref=e76]: Evolução Mensal
+          - generic [ref=e78] [cursor=pointer]: "?"
+        - generic [ref=e80]:
+          - img [ref=e81]:
+            - generic [ref=e83]:
+              - generic [ref=e84] [cursor=pointer]: Criados
+              - generic [ref=e87] [cursor=pointer]: Finalizados (por mês de criação)
+              - generic [ref=e90] [cursor=pointer]: Relatos
+            - generic [ref=e94]:
+              - generic "100" [ref=e95]
+              - generic "80" [ref=e96]
+              - generic "60" [ref=e97]
+              - generic "40" [ref=e98]
+              - generic "20" [ref=e99]
+              - generic "0" [ref=e100]
+            - generic [ref=e134]:
+              - generic "01/2026" [ref=e135]
+              - generic "02/2026" [ref=e136]
+              - generic "03/2026" [ref=e137]
+              - generic "04/2026" [ref=e138]
+              - generic "05/2026" [ref=e139]
+              - generic "06/2026" [ref=e140]
+              - generic "07/2026" [ref=e141]
+              - generic "08/2026" [ref=e142]
+          - generic [ref=e143]:
+            - generic "Zoom In" [ref=e144] [cursor=pointer]
+            - generic "Zoom Out" [ref=e145] [cursor=pointer]
+            - generic "Selection Zoom" [ref=e146] [cursor=pointer]
+            - generic "Panning" [ref=e147] [cursor=pointer]
+            - generic "Reset Zoom" [ref=e148] [cursor=pointer]
+            - generic "Menu" [ref=e149] [cursor=pointer]
+            - generic:
+              - generic "Download SVG"
+              - generic "Download PNG"
+              - generic "Download CSV"
+  - generic [ref=e150]:
+    - generic [ref=e151]: ⏱️ Tempo Médio de Teste por Tamanho
+    - generic [ref=e153]:
+      - generic [ref=e154]:
+        - generic [ref=e155]: Tempo médio de teste por tamanho de demanda
+        - generic [ref=e157] [cursor=pointer]: "?"
+      - table [ref=e159]:
+        - rowgroup [ref=e160]:
+          - row [ref=e161]:
+            - columnheader "Tamanho" [ref=e162]
+            - columnheader "Cards" [ref=e163]
+            - columnheader "Tempo médio" [ref=e164]
+        - rowgroup [ref=e165]:
+          - row [ref=e166]:
+            - cell "micro" [ref=e167]
+            - cell "28" [ref=e168]
+            - cell "1.9h" [ref=e169]
+          - row [ref=e170]:
+            - cell "p" [ref=e171]
+            - cell "86" [ref=e172]
+            - cell "2.2h" [ref=e173]
+          - row [ref=e174]:
+            - cell "m" [ref=e175]
+            - cell "77" [ref=e176]
+            - cell "3.2h" [ref=e177]
+          - row [ref=e178]:
+            - cell "g" [ref=e179]
+            - cell "33" [ref=e180]
+            - cell "5.4h" [ref=e181]
+          - row [ref=e182]:
+            - cell "gg" [ref=e183]
+            - cell "6" [ref=e184]
+            - cell "4.9h" [ref=e185]
+  - generic [ref=e186]:
+    - generic [ref=e187]: 🚨 Cards com mais relatos
+    - generic [ref=e189]:
+      - generic [ref=e190]:
+        - generic [ref=e191]: Top 20 - Cards com mais relatos
+        - generic [ref=e193] [cursor=pointer]: "?"
+      - generic [ref=e194]: Cards com maior quantidade de bugs encontrados pelo QA.
+      - table [ref=e196]:
+        - rowgroup [ref=e197]:
+          - row [ref=e198]:
+            - columnheader "#" [ref=e199]
+            - columnheader "Card" [ref=e200]
+            - columnheader "Relatos" [ref=e201]
+            - columnheader "Projeto" [ref=e202]
+            - columnheader "Status" [ref=e203]
+        - rowgroup [ref=e204]:
+          - row [ref=e205]:
+            - cell "1" [ref=e206]
+            - cell "Criação de monitor gerencial para serviços do Criador de Serviços…" [ref=e207]
+            - cell "22" [ref=e208]
+            - cell "Gov" [ref=e209]
+            - cell "Finalizado" [ref=e210]
+          - row [ref=e211]:
+            - cell "2" [ref=e212]
+            - cell "Refazer UI da área de perfil do app social" [ref=e213]
+            - cell "15" [ref=e214]
+            - cell "Gov, App Social" [ref=e215]
+            - cell "Finalizado" [ref=e216]
+          - row [ref=e217]:
+            - cell "3" [ref=e218]
+            - 'cell "Novo tipo de pergunta: Lista agrupada" [ref=e219]'
+            - cell "14" [ref=e220]
+            - cell "Gov, Portal" [ref=e221]
+            - cell "Finalizado" [ref=e222]
+          - row [ref=e223]:
+            - cell "4" [ref=e224]
+            - 'cell "Novo tipo de pergunta: Lista agrupada" [ref=e225]'
+            - cell "12" [ref=e226]
+            - cell "App Campo, App Social" [ref=e227]
+            - cell "Finalizado" [ref=e228]
+          - row [ref=e229]:
+            - cell "5" [ref=e230]
+            - cell "Mudança na regra de negócios do criador de serviços" [ref=e231]
+            - cell "12" [ref=e232]
+            - cell "Gov" [ref=e233]
+            - cell "Finalizado" [ref=e234]
+          - row [ref=e235]:
+            - cell "6" [ref=e236]
+            - cell "Cidadãos não conseguem realizar agendamentos no mesmo dia caso já…" [ref=e237]
+            - cell "11" [ref=e238]
+            - cell "App Social" [ref=e239]
+            - cell "Finalizado" [ref=e240]
+          - row [ref=e241]:
+            - cell "7" [ref=e242]
+            - cell "Opção de pré-agendamento" [ref=e243]
+            - cell "9" [ref=e244]
+            - cell "Gov" [ref=e245]
+            - cell "Finalizado" [ref=e246]
+          - row [ref=e247]:
+            - cell "8" [ref=e248]
+            - cell "Ajuste de validação na configuração de perguntas de caixa de sele…" [ref=e249]
+            - cell "8" [ref=e250]
+            - cell "Gov, App Social" [ref=e251]
+            - cell "Finalizado" [ref=e252]
+          - row [ref=e253]:
+            - cell "9" [ref=e254]
+            - cell "Criar relatório de visão geral de serviços oferecidos pela entida…" [ref=e255]
+            - cell "7" [ref=e256]
+            - cell "Gov" [ref=e257]
+            - cell "Finalizado" [ref=e258]
+          - row [ref=e259]:
+            - cell "10" [ref=e260]
+            - cell "Revisão e adequação das regras de agendamento - Limite de partici…" [ref=e261]
+            - cell "7" [ref=e262]
+            - cell "Gov" [ref=e263]
+            - cell "Finalizado" [ref=e264]
+          - row [ref=e265]:
+            - cell "11" [ref=e266]
+            - cell "Implementar typesense para busca de protocolos" [ref=e267]
+            - cell "7" [ref=e268]
+            - cell "Gov" [ref=e269]
+            - cell "Finalizado" [ref=e270]
+          - row [ref=e271]:
+            - cell "12" [ref=e272]
+            - cell "Efeito de busca e atualização - CPF" [ref=e273]
+            - cell "7" [ref=e274]
+            - cell "Gov" [ref=e275]
+            - cell "Finalizado" [ref=e276]
+          - row [ref=e277]:
+            - cell "13" [ref=e278]
+            - cell "tradução" [ref=e279]
+            - cell "6" [ref=e280]
+            - cell "Gov" [ref=e281]
+            - cell "Pausado" [ref=e282]
+          - row [ref=e283]:
+            - cell "14" [ref=e284]
+            - cell "Adequar aplicativo às novas regras de agendamento" [ref=e285]
+            - cell "6" [ref=e286]
+            - cell "App Social" [ref=e287]
+            - cell "Finalizado" [ref=e288]
+          - row [ref=e289]:
+            - cell "15" [ref=e290]
+            - cell "Encaminhamento e atribuições de protocolo no app de campo" [ref=e291]
+            - cell "6" [ref=e292]
+            - cell "App Campo" [ref=e293]
+            - cell "Finalizado" [ref=e294]
+          - row [ref=e295]:
+            - cell "16" [ref=e296]
+            - cell "Padronizar experiência de agendamento no app" [ref=e297]
+            - cell "6" [ref=e298]
+            - cell "App Social" [ref=e299]
+            - cell "Finalizado" [ref=e300]
+          - row [ref=e301]:
+            - cell "17" [ref=e302]
+            - cell "Área de mais serviços digitais no Colab Campo não possui barra de…" [ref=e303]
+            - cell "6" [ref=e304]
+            - cell "App Campo" [ref=e305]
+            - cell "Finalizado" [ref=e306]
+          - row [ref=e307]:
+            - cell "18" [ref=e308]
+            - cell "Ao criar uma interação pelo Colab Campo, não é possível anexar um…" [ref=e309]
+            - cell "6" [ref=e310]
+            - cell "App Campo" [ref=e311]
+            - cell "Finalizado" [ref=e312]
+          - row [ref=e313]:
+            - cell "19" [ref=e314]
+            - cell "Efeito de busca e atualização - CPF no app de campo" [ref=e315]
+            - cell "6" [ref=e316]
+            - cell "App Campo" [ref=e317]
+            - cell "Finalizado" [ref=e318]
+          - row [ref=e319]:
+            - cell "20" [ref=e320]
+            - cell "Padronizar experiência de agendamento no app" [ref=e321]
+            - cell "6" [ref=e322]
+            - cell "App Social" [ref=e323]
+            - cell "Finalizado" [ref=e324]
+  - contentinfo [ref=e325]:
+    - text: Dashboard gerado por
+    - strong [ref=e326]: QA Agent
+    - text: "| Dados: Asana API | Projeto: Features de Lançamento"

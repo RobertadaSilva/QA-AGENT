@@ -1,8 +1,0 @@
-page:
-  url: https://www.google.com
-
-tasks:
-  - name: Verificar que o Google carrega
-    flow:
-      - ai: Aguarde a página carregar completamente
-      - aiAssert: O campo de busca do Google está visível na tela

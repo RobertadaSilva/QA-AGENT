@@ -2,13 +2,29 @@ name: Regressão E2E
 
 on:
   pull_request:
-    branches: [master]
+    branches: [master, main]
   push:
-    branches: [master]
+    branches: [master, main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Modo de execução'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - smoke
+          - heal
+
+env:
+  BASE_URL: http://localhost:3000
 
 jobs:
-  run-regression:
-    name: Executar regressão E2E
+  # ─── A cada PR: executa testes ──────────────────────────────────────────────
+  test-pr:
+    name: "🧪 Testes E2E (PR)"
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,21 +33,292 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Instalar Midscene
-        run: npm install -g @midscene/cli
+      - name: Instalar dependências
+        run: npm ci
 
-      - name: Rodar testes de regressão
+      - name: Instalar browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Executar testes E2E
+        id: test
+        continue-on-error: true
+        run: npx playwright test --reporter=list,json
         env:
-          MIDSCENE_MODEL_NAME: gemini-3.5-flash
-          MIDSCENE_MODEL_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          MIDSCENE_MODEL_BASE_URL: https://generativelanguage.googleapis.com/v1beta
-          MIDSCENE_MODEL_FAMILY: gemini
-        run: midscene ./tests/smoke-google.yaml
+          CI: true
+          PLAYWRIGHT_JSON_OUTPUT_NAME: test-results.json
+          ASANA_TOKEN: ${{ secrets.ASANA_TOKEN }}
 
-      - name: Upload report
+      - name: Verificar resultado
+        if: steps.test.outcome == 'failure'
+        run: |
+          echo "❌ Testes falharam — verificar relatório"
+          echo "## ❌ Testes E2E falharam" >> $GITHUB_STEP_SUMMARY
+          echo "Verifique o artifact playwright-report para detalhes." >> $GITHUB_STEP_SUMMARY
+          exit 1
+
+      - name: Upload relatório
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: midscene-report
-          path: midscene_run/report/
+          name: playwright-report-pr
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Upload traces (falhas)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-pr
+          path: test-results/
+          retention-days: 7
+
+  # ─── A cada push na main: executa + healer se falhar ────────────────────────
+  test-main:
+    name: "🧪 Testes E2E (Main)"
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      test_failed: ${{ steps.test.outcome == 'failure' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Instalar browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Executar suite completa
+        id: test
+        continue-on-error: true
+        run: npx playwright test --reporter=list,json
+        env:
+          CI: true
+          PLAYWRIGHT_JSON_OUTPUT_NAME: test-results.json
+          ASANA_TOKEN: ${{ secrets.ASANA_TOKEN }}
+
+      - name: Upload relatório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-main
+          path: playwright-report/
           retention-days: 14
+
+      - name: Upload resultados pra Healer
+        if: steps.test.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-failures
+          path: |
+            test-results.json
+            test-results/
+          retention-days: 3
+
+  # ─── Healer: auto-corrige testes que falharam ───────────────────────────────
+  healer:
+    name: "🩺 Healer (auto-correção)"
+    needs: test-main
+    if: needs.test-main.outputs.test_failed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Instalar browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Download falhas
+        uses: actions/download-artifact@v4
+        with:
+          name: test-failures
+
+      - name: Identificar testes falhando
+        id: failures
+        run: |
+          # Extrai nomes dos testes que falharam do JSON
+          FAILED_TESTS=$(node -e "
+            const results = JSON.parse(require('fs').readFileSync('test-results.json', 'utf-8'));
+            const failed = results.suites
+              ?.flatMap(s => s.specs || [])
+              ?.filter(s => s.ok === false)
+              ?.map(s => s.file)
+              ?.filter((v, i, a) => a.indexOf(v) === i) || [];
+            console.log(failed.join(' '));
+          ")
+          echo "files=$FAILED_TESTS" >> $GITHUB_OUTPUT
+          echo "🩺 Testes falhando: $FAILED_TESTS"
+
+      - name: Executar Healer (re-run com update snapshots)
+        if: steps.failures.outputs.files != ''
+        run: |
+          # Re-roda os testes falhando com --update-snapshots pra capturar estado atual
+          npx playwright test ${{ steps.failures.outputs.files }} --update-snapshots || true
+        env:
+          CI: true
+          ASANA_TOKEN: ${{ secrets.ASANA_TOKEN }}
+
+      - name: Criar branch e PR com correções
+        if: steps.failures.outputs.files != ''
+        run: |
+          git config user.name "QA Bot (Healer)"
+          git config user.email "qa-bot@noreply.github.com"
+
+          BRANCH="fix/healer-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b "$BRANCH"
+
+          # Commita mudanças nos snapshots/testes
+          git add -A tests/ test-results/ || true
+          git add -A "*.spec.ts" || true
+
+          if git diff --cached --quiet; then
+            echo "Nenhuma correção gerada pelo Healer"
+            exit 0
+          fi
+
+          git commit -m "fix: healer auto-correção de testes falhando
+
+          Testes corrigidos: ${{ steps.failures.outputs.files }}
+          Trigger: push na main"
+
+          git push -u origin "$BRANCH"
+
+          # Criar PR
+          echo "pr_branch=$BRANCH" >> $GITHUB_OUTPUT
+        id: create_branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Criar PR (Healer)
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "🩺 Healer: correção automática de testes"
+          body: |
+            ## Auto-correção pelo Healer
+
+            Testes que falharam após merge na main foram re-executados e corrigidos automaticamente.
+
+            **Arquivos afetados:** ${{ steps.failures.outputs.files }}
+
+            > ⚠️ Revise as mudanças antes de aprovar — o Healer corrige seletores e snapshots, mas pode não entender mudanças intencionais de comportamento.
+          base: main
+          head: ${{ steps.create_branch.outputs.pr_branch }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ─── Smoke test (manual / pós-deploy) ──────────────────────────────────────
+  smoke:
+    name: "🚨 Smoke Test"
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'smoke'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Instalar browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Executar smoke tests
+        run: npx playwright test --grep @smoke
+        env:
+          CI: true
+          BASE_URL: ${{ vars.PRODUCTION_URL || 'http://localhost:3000' }}
+          ASANA_TOKEN: ${{ secrets.ASANA_TOKEN }}
+
+      - name: Upload relatório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-smoke
+          path: playwright-report/
+          retention-days: 7
+
+  # ─── Heal manual (workflow_dispatch) ────────────────────────────────────────
+  heal-manual:
+    name: "🩺 Healer (manual)"
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'heal'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Instalar browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Rodar testes e identificar falhas
+        id: test
+        continue-on-error: true
+        run: npx playwright test --reporter=json
+        env:
+          CI: true
+          PLAYWRIGHT_JSON_OUTPUT_NAME: test-results.json
+          ASANA_TOKEN: ${{ secrets.ASANA_TOKEN }}
+
+      - name: Healer - re-run com update
+        if: steps.test.outcome == 'failure'
+        run: npx playwright test --update-snapshots || true
+        env:
+          CI: true
+          ASANA_TOKEN: ${{ secrets.ASANA_TOKEN }}
+
+      - name: Criar PR com correções
+        if: steps.test.outcome == 'failure'
+        run: |
+          git config user.name "QA Bot (Healer)"
+          git config user.email "qa-bot@noreply.github.com"
+
+          BRANCH="fix/healer-manual-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b "$BRANCH"
+          git add -A tests/ || true
+
+          if git diff --cached --quiet; then
+            echo "Nenhuma correção necessária"
+            exit 0
+          fi
+
+          git commit -m "fix: healer correção manual de testes"
+          git push -u origin "$BRANCH"
+
+        id: create_manual_branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Criar PR (manual heal)
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "🩺 Healer: correção manual"
+          body: "Correções geradas manualmente via workflow_dispatch."
+          base: main
+          head: ${{ steps.create_manual_branch.outputs.pr_branch }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
