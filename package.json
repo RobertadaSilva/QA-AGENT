@@ -1,12 +1,19 @@
 {
   "name": "qa-agent",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "type": "module",
-  "description": "Agente de QA automatizado com dashboard de métricas e geração de cenários de teste via IA",
+  "description": "Agente de QA automatizado com dashboard de métricas, geração de cenários via IA e testes regressivos de UI com Playwright Agents",
   "scripts": {
     "qa": "node src/runner.js",
     "dashboard": "node src/server.js",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test tests/*.test.js",
+    "test:e2e": "npx playwright test",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:report": "npx playwright show-report",
+    "playwright:install": "npx playwright install --with-deps",
+    "agents:init": "npx playwright init-agents"
   },
   "author": "Roberta da Silva",
   "license": "ISC",
@@ -15,10 +22,13 @@
     "node-fetch": "^3.3.2",
     "openai": "^6.49.0"
   },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "playwright": "^1.52.0"
+  },
   "main": "index.js",
   "directories": {
     "test": "tests"
   },
-  "devDependencies": {},
-  "keywords": []
+  "keywords": ["qa", "automation", "playwright", "testing", "agents", "e2e"]
 }

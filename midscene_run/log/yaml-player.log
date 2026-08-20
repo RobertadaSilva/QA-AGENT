@@ -1,9 +1,0 @@
-[2026-08-05T09:41:17.883-03:00] setting output by script path C:\Users\Roberta\OneDrive\QA-AGENT\midscene_run\output\dashboard_visualizacao-1785933677882.json
-[2026-08-05T09:41:32.092-03:00] playing step 0, flowItem={"ai":"Aguarde até que o dashboard carregue completamente todas as informações."}
-[2026-08-05T09:47:07.610-03:00] setting output by script path C:\Users\Roberta\OneDrive\QA-AGENT\midscene_run\output\dashboard_visualizacao-1785934027609.json
-[2026-08-05T09:47:10.898-03:00] playing step 0, flowItem={"ai":"Aguarde até que o dashboard carregue completamente todas as informações."}
-[2026-08-06T08:50:38.930-03:00] setting output by script path C:\Users\Roberta\OneDrive\QA-AGENT\midscene_run\output\dashboard_visualizacao-1786017038930.json
-[2026-08-06T08:50:40.608-03:00] playing step 0, flowItem={"ai":"Aguarde até que o dashboard carregue completamente todas as informações."}
-[2026-08-06T08:53:14.371-03:00] setting output by script path C:\Users\Roberta\OneDrive\QA-AGENT\midscene_run\output\dashboard_visualizacao-1786017194370.json
-[2026-08-06T08:53:17.219-03:00] playing step 0, flowItem={"ai":"Aguarde até que o dashboard carregue completamente todas as informações."}
-[2026-08-06T08:53:33.140-03:00] playing step 1, flowItem={"aiAssert":"Verifique se os KPIs principais estão visíveis na tela (Total de cards, Finalizados, Em andamento, Taxa de bugs, Relatos e Densidade)."}

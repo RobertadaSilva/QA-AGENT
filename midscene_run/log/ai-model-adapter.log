@@ -1,3 +1,0 @@
-[2026-08-05T09:41:32.102-03:00] model adapter "default" unsupportedUserConfig: ["reasoningEnabled","reasoningEffort","reasoningBudget"]
-[2026-08-05T09:47:10.905-03:00] model adapter "gemini" unsupportedUserConfig: ["reasoningBudget"]
-[2026-08-06T08:53:17.226-03:00] model adapter "gemini" unsupportedUserConfig: ["reasoningBudget"]

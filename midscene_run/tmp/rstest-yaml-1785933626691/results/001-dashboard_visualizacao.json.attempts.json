@@ -1,9 +1,0 @@
-[
-  {
-    "attempt": 1,
-    "success": false,
-    "error": "Environment variable \"BASE_URL\" is not defined",
-    "duration": 1,
-    "resultType": "failed"
-  }
-]
